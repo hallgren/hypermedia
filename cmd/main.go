@@ -29,6 +29,9 @@ func devices(w http.ResponseWriter, req *http.Request) {
 	h.AddLink("device", "/device/2", "device 2")
 	h.AddLink("root", "/", "root")
 	h.AddProperty("count", "2")
+	f := h.AddForm("/devices", "POST")
+	f.AddInput("123", "text", "name", "123", "username")
+	f.AddInput("1234", "password", "name", "", "")
 	hypermedia.RenderHTML(w, h)
 }
 

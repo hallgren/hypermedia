@@ -102,7 +102,19 @@ const tpl = `
   </head>
   <body>
 
-  {{ define "r" }}
+	{{ define "form" }}
+		<form action="{{ .URL }}" method="{{ .Method }}">
+			{{ range .Inputs }}
+				{{ if .Label }}
+					<label for="{{ .Name }}">{{ .Label }}:</label><br>
+				{{ end }}
+				<input type="{{ .Type }}" id="{{ .ID }}" name="{{ .Name }}" value="{{ .Value }}"><br>
+			{{ end }}
+			<input type="submit">
+		</form>
+	{{ end }}
+
+	{{ define "r" }}
 		<table class="attributes">
         {{range $key, $value := .Properties}}
         	<tr class="attribute"><td class="name">{{ $key }}</td><td class="value">{{ $value }}</td></tr>
@@ -124,6 +136,14 @@ const tpl = `
             </tr>
             {{end}}
         </table>
+
+		{{ if gt (len .Forms) 0}}
+        	<div class="forms">
+			{{ range .Forms }}
+				{{ template "form" . }}
+			{{ end }}
+			</div>
+		{{ end }}
 	{{ end }}
 
     <div class="header request-info">
@@ -135,7 +155,6 @@ const tpl = `
       <div class="resource-data body">
 		{{ template "r" . }}
 
-        <div class="forms"></div>
 		
 		{{ if gt (len .Resources) 0}}
 			{{ range .Resources }}
