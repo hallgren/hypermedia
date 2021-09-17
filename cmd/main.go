@@ -19,6 +19,7 @@ func devices(w http.ResponseWriter, req *http.Request) {
 	h := hypermedia.Hypermedia{}
 	h.AddLink("self", "/device", "devices")
 	h.AddLink("device", "/device/1", "device 1")
+	h.AddLink("device", "/device/2", "device 2")
 	h.AddLink("root", "/", "root")
 	hypermedia.RenderHTML(w, h)
 }
@@ -26,9 +27,10 @@ func devices(w http.ResponseWriter, req *http.Request) {
 func device(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	deviceURL := "/device/" + vars["id"]
+	deviceName := "device " + vars["id"]
 	h := hypermedia.Hypermedia{}
 
-	h.AddLink("self", deviceURL, "device 1")
+	h.AddLink("self", deviceURL, deviceName)
 	h.AddLink("devices", "/device", "devices")
 	h.AddLink("root", "/", "root")
 	hypermedia.RenderHTML(w, h)
