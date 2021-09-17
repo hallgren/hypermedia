@@ -8,9 +8,9 @@ import (
 const tpl = `
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <style type="text/css">
       * {
         box-sizing: border-box;
@@ -99,15 +99,15 @@ const tpl = `
         display: none;
       }
     </style>
-	</head>
-	<body>
-	{{ define "r" }}
+  </head>
+  <body>
+
+  {{ define "r" }}
 		<table class="attributes">
         {{range $key, $value := .Properties}}
         	<tr class="attribute"><td class="name">{{ $key }}</td><td class="value">{{ $value }}</td></tr>
         {{end}}
         </table>
-
 		<table class="links">
 			<tr>
             	<th>Rel</th>
@@ -123,23 +123,57 @@ const tpl = `
                 <td class="templated">false</td>
             </tr>
             {{end}}
-        </table}
+        </table>
+	{{ end }}
 
+    <div class="header request-info">
+    </div>
+
+    <div class="resource">
+      <h1 class="heading type">Resource Type</h1>
+
+      <div class="resource-data body">
+		{{ template "r" . }}
+
+        <div class="forms"></div>
+		
 		{{ if gt (len .Resources) 0}}
 			{{ range .Resources }}
-			{{ template "r" . }}
+        		<div class="subresource collapsed">
+          			<div class="subresource-rel rel heading"><a>{{ .Name }}</a></div>
+          			<div class="value body" class="collapsed">
+						{{ template "r" . }}
+		  			</div>
+		  		</div>
 			{{ end }}
 		{{ end }}
-	{{ end }}
-		<div class="header request-info">
-		</div>
-		<div class="resource">
-		<h1 class="heading type">Resource Type</h1>
-		<div class="resource-data body">
-			{{ template "r" . }}
-		</div>
-		</div>
-	</body>
+      </div>
+    </div>
+
+    <script>
+      function setupCollapseExpand() {
+        var nodes = document.getElementsByClassName("heading");
+
+        for (var i=0; i < nodes.length; i++) {
+          var node = nodes[i];
+          node.onclick = function() {
+            var parent = this.parentNode;
+            if (parent.className.indexOf("collapsed") >= 0) {
+              parent.className = parent.className.replace("collapsed", "expanded");
+            } else {
+              parent.className = parent.className.replace("expanded", "collapsed");
+            }
+          };
+        }
+      };
+
+      if (window.addEventListener) {
+        window.addEventListener("load", setupCollapseExpand, false);
+      } else if (window.attachEvent) {
+        window.attachEvent("onload", setupCollapseExpand);
+      }
+    </script>
+  </body>
 </html>`
 
 var t, _ = template.New("webpage").Parse(tpl)
