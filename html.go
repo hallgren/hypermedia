@@ -101,61 +101,43 @@ const tpl = `
     </style>
 	</head>
 	<body>
+	{{ define "r" }}
+		<table class="attributes">
+        {{range $key, $value := .Properties}}
+        	<tr class="attribute"><td class="name">{{ $key }}</td><td class="value">{{ $value }}</td></tr>
+        {{end}}
+        </table>
+
+		<table class="links">
+			<tr>
+            	<th>Rel</th>
+            	<th>URI</th>
+            	<th>Title</th>
+            	<th>Templated</th>
+            </tr>
+            {{range .Links}}
+            <tr class="link">
+            	<td class="rel"><a href="">{{ .Rel }}</a></td>
+                <td class="uri"><a href="{{ .URL }}">{{ .URL }}</a></td>
+                <td class="title">{{ .Name }}</td>
+                <td class="templated">false</td>
+            </tr>
+            {{end}}
+        </table}
+
+		{{ if gt (len .Resources) 0}}
+			{{ range .Resources }}
+			{{ template "r" . }}
+			{{ end }}
+		{{ end }}
+	{{ end }}
 		<div class="header request-info">
 		</div>
 		<div class="resource">
 		<h1 class="heading type">Resource Type</h1>
 		<div class="resource-data body">
-
-
-		<table class="attributes">
-		{{range $key, $value := .Properties}}
-			<tr class="attribute"><td class="name">{{ $key }}</td><td class="value">{{ $value }}</td></tr>
-		{{end}}
-		</table>
-
-		<table class="links">
-			<tr>
-				<th>Rel</th>
-				<th>URI</th>
-				<th>Title</th>
-				<th>Templated</th>
-			</tr>
-			{{range .Links}}
-			<tr class="link">
-				<td class="rel"><a href="">{{ .Rel }}</a></td>
-				<td class="uri"><a href="{{ .URL }}">{{ .URL }}</a></td>
-				<td class="title">{{ .Name }}</td>
-				<td class="templated">false</td>
-			</tr>
-			{{end}}
-		  </table}
+			{{ template "r" . }}
 		</div>
-		<div class="resource-data body">
-		<table class="attributes">
-		{{range .Resources}}
-		{{range $key, $value := .Properties}}
-			<tr class="attribute"><td class="name">{{ $key }}</td><td class="value">{{ $value }}</td></tr>
-		{{end}}
-		{{end}}
-		</table>
-		<table class="links">
-			<tr>
-				<th>Rel</th>
-				<th>URI</th>
-				<th>Title</th>
-				<th>Templated</th>
-			</tr>
-			{{range .Links}}
-			<tr class="link">
-				<td class="rel"><a href="">{{ .Rel }}</a></td>
-				<td class="uri"><a href="{{ .URL }}">{{ .URL }}</a></td>
-				<td class="title">{{ .Name }}</td>
-				<td class="templated">false</td>
-			</tr>
-			{{end}}
-		  </table}
-
 		</div>
 	</body>
 </html>`
