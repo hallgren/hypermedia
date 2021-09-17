@@ -8,7 +8,8 @@ import (
 )
 
 func TestRenderHtml(t *testing.T) {
-	h := hypermedia.Hypermedia{}
+	h := hypermedia.New("test")
 	h.AddLink("self", "/", "root")
+	h.AddProperty("test", "value")
 	hypermedia.RenderHTML(os.Stdout, h)
 }
