@@ -110,7 +110,6 @@ const tpl = `
 				{{ end }}
 				<input type="{{ .Type }}" id="{{ .ID }}" name="{{ .Name }}" value="{{ .Value }}"><br>
 			{{ end }}
-			<input type="submit">
 		</form>
 	{{ end }}
 
