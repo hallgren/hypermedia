@@ -106,7 +106,7 @@ const tpl = `
 		<form action="{{ .URL }}" method="{{ .Method }}">
 			{{ range .Inputs }}
 				{{ if .Label }}
-					<label for="{{ .Name }}">{{ .Label }}:</label><br>
+					<label for="{{ .ID }}">{{ .Label }}:</label><br>
 				{{ end }}
 				<input type="{{ .Type }}" id="{{ .ID }}" name="{{ .Name }}" value="{{ .Value }}"><br>
 			{{ end }}
