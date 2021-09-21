@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/hallgren/hypermedia"
 )
@@ -11,7 +11,10 @@ type Item struct {
 	ID string
 }
 
-var Items = []Item{}
+var (
+	Items = []Item{}
+	port = ":8090"
+)
 
 func root(w http.ResponseWriter, req *http.Request) {
 	h := hypermedia.New("root")
@@ -74,5 +77,6 @@ func main() {
 	mux.HandleFunc("/", root)
 	mux.HandleFunc("/items", items)
 	mux.HandleFunc("/items/{id:[1-9]+}", item)
-	http.ListenAndServe(":8090", mux)
+	fmt.Printf("Open browser to localhost%s",port)
+	http.ListenAndServe(port, mux)
 }
