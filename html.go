@@ -103,7 +103,7 @@ const tpl = `
   <body>
 
 	{{ define "form" }}
-		<form rel="{{ .Rel }}" action="{{ .URL }}" method="{{ .Method }}">
+		<form rel="{{ .REL }}" action="{{ .URL }}" method="{{ .Method }}">
 			{{ range .Inputs }}
 				{{ if .Label }}
 					<label for="{{ .ID }}">{{ .Label }}:</label><br>
@@ -121,14 +121,14 @@ const tpl = `
         </table>
 		<table class="links">
 			<tr>
-            	<th>Rel</th>
+            	<th>REL</th>
             	<th>URI</th>
             	<th>Title</th>
             	<th>Templated</th>
             </tr>
             {{range .Links}}
             <tr class="link">
-            	<td class="rel"><a href="">{{ .Rel }}</a></td>
+            	<td class="rel"><a href="">{{ .REL }}</a></td>
                 <td class="uri"><a href="{{ .URL }}">{{ .URL }}</a></td>
                 <td class="title">{{ .Name }}</td>
                 <td class="templated">false</td>

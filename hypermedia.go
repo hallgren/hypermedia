@@ -1,7 +1,7 @@
 package hypermedia
 
 type Link struct {
-	Rel  string
+	REL  string
 	URL  string
 	Name string
 }
@@ -17,7 +17,7 @@ type Input struct {
 type Form struct {
 	URL    string
 	Method string
-	Rel    string
+	REL    string
 	Inputs []*Input
 }
 
@@ -44,8 +44,7 @@ func newResource(name string) *Resource {
 }
 
 // AddLink adds a link to the hypermedia struct
-func (h *Resource) AddLink(rel, url, name string) {
-	l := Link{Rel: rel, URL: url, Name: name}
+func (h *Resource) AddLink(l Link) {
 	h.Links = append(h.Links, l)
 }
 
@@ -62,21 +61,11 @@ func (h *Resource) AddResource(name string) *Resource {
 }
 
 // AddForm adds a form to an existing resource
-func (h *Resource) AddForm(url, method, rel string) *Form {
-	inputs := make([]*Input, 0, 0)
-	f := Form{URL: url, Method: method, Inputs: inputs, Rel: rel}
-	h.Forms = append(h.Forms, &f)
-	return &f
+func (h *Resource) AddForm(f *Form) {
+	h.Forms = append(h.Forms, f)
 }
 
 // AddInput adds a input to a existing form
-func (f *Form) AddInput(id, typ, name, value, label string) {
-	input := Input{
-		ID:    id,
-		Type:  typ,
-		Name:  name,
-		Value: value,
-		Label: label,
-	}
-	f.Inputs = append(f.Inputs, &input)
+func (f *Form) AddInput(i *Input) {
+	f.Inputs = append(f.Inputs, i)
 }

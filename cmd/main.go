@@ -19,28 +19,38 @@ var (
 
 func root(w http.ResponseWriter, req *http.Request) {
 	h := hypermedia.New("root")
-	h.AddLink("self", "/", "self")
-	h.AddLink("items", "/items", "items")
+	self := hypermedia.Link{REL: "self", URL: "/", Name: "self"}
+	h.AddLink(self)
+	items := hypermedia.Link{REL: "items", URL: "/items", Name: "items"}
+	h.AddLink(items)
 	hypermedia.RenderHTML(w, h)
 }
 
 func items(w http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
 		h := hypermedia.New("items")
-		h.AddLink("self", "items", "items")
+		items := hypermedia.Link{REL: "self", URL: "/items", Name: "items"}
+		h.AddLink(items)
 
 		for _, i := range Items {
 			r := h.AddResource(i.ID)
 			r.AddProperty("id", i.ID)
-			r.AddLink("item", "/items/"+i.ID, "item")
-			f := r.AddForm("/items/"+i.ID, "POST", "delete_item")
-			f.AddInput("delete", "submit", "Delete", "Delete", "")
+			l := hypermedia.Link{Name: "item", URL: "/items/" + i.ID, REL: "item"}
+			r.AddLink(l)
+			f := hypermedia.Form{URL: "/items/" + i.ID, Method: "POST", REL: "delete_item"}
+			r.AddForm(&f)
+
+			i := hypermedia.Input{Type: "submit", Value: "Delete", ID: "delete", Label: "Delete"}
+			f.AddInput(&i)
 		}
 
 		// create item form
-		f := h.AddForm("items", "POST", "add_item")
-		f.AddInput("create", "text", "create", "", "ID")
-		f.AddInput("create", "submit", "submit", "Create", "")
+		f := hypermedia.Form{URL: "/items", Method: "POST", REL: "add_item"}
+		h.AddForm(&f)
+		create := hypermedia.Input{Type: "text", Label: "ID", Name: "create"}
+		f.AddInput(&create)
+		submit := hypermedia.Input{Type: "submit", Value: "Create"}
+		f.AddInput(&submit)
 		hypermedia.RenderHTML(w, h)
 	} else if req.Method == "POST" {
 		req.ParseForm()
@@ -57,11 +67,16 @@ func item(w http.ResponseWriter, req *http.Request) {
 		h := hypermedia.New("item")
 
 		h.AddProperty("id", vars["id"])
-		h.AddLink("self", url, "item")
-		h.AddLink("items", "/items", "items")
-		h.AddLink("root", "/", "root")
-		f := h.AddForm("/items/"+vars["id"], "POST", "delete_item")
-		f.AddInput("delete", "submit", "Delete", "Delete", "")
+		self := hypermedia.Link{REL: "self", URL: url, Name: "item"}
+		h.AddLink(self)
+		items := hypermedia.Link{REL: "items", URL: "/items", Name: "items"}
+		h.AddLink(items)
+		root := hypermedia.Link{REL: "root", URL: "/", Name: "root"}
+		h.AddLink(root)
+		f := hypermedia.Form{Method: "POST", URL: "/items/" + vars["id"], REL: "delete_item"}
+		h.AddForm(&f)
+		i := hypermedia.Input{Type: "submit", Value: "Delete"}
+		f.AddInput(&i)
 		hypermedia.RenderHTML(w, h)
 	} else if req.Method == "POST" {
 		for s, i := range Items {
