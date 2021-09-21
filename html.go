@@ -103,7 +103,7 @@ const tpl = `
   <body>
 
 	{{ define "form" }}
-		<form action="{{ .URL }}" method="{{ .Method }}">
+		<form rel="{{ .Rel }}" action="{{ .URL }}" method="{{ .Method }}">
 			{{ range .Inputs }}
 				{{ if .Label }}
 					<label for="{{ .ID }}">{{ .Label }}:</label><br>

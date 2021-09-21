@@ -1,8 +1,9 @@
 package main
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/hallgren/hypermedia"
 )
@@ -13,7 +14,7 @@ type Item struct {
 
 var (
 	Items = []Item{}
-	port = ":8090"
+	port  = ":8090"
 )
 
 func root(w http.ResponseWriter, req *http.Request) {
@@ -32,12 +33,12 @@ func items(w http.ResponseWriter, req *http.Request) {
 			r := h.AddResource(i.ID)
 			r.AddProperty("id", i.ID)
 			r.AddLink("item", "/items/"+i.ID, "item")
-			f := r.AddForm("/items/"+i.ID, "POST")
+			f := r.AddForm("/items/"+i.ID, "POST", "delete_item")
 			f.AddInput("delete", "submit", "Delete", "Delete", "")
 		}
 
 		// create item form
-		f := h.AddForm("items", "POST")
+		f := h.AddForm("items", "POST", "add_item")
 		f.AddInput("create", "text", "create", "", "ID")
 		f.AddInput("create", "submit", "submit", "Create", "")
 		hypermedia.RenderHTML(w, h)
@@ -59,7 +60,7 @@ func item(w http.ResponseWriter, req *http.Request) {
 		h.AddLink("self", url, "item")
 		h.AddLink("items", "/items", "items")
 		h.AddLink("root", "/", "root")
-		f := h.AddForm("/items/"+vars["id"], "POST")
+		f := h.AddForm("/items/"+vars["id"], "POST", "delete_item")
 		f.AddInput("delete", "submit", "Delete", "Delete", "")
 		hypermedia.RenderHTML(w, h)
 	} else if req.Method == "POST" {
@@ -77,6 +78,6 @@ func main() {
 	mux.HandleFunc("/", root)
 	mux.HandleFunc("/items", items)
 	mux.HandleFunc("/items/{id:[1-9]+}", item)
-	fmt.Printf("Open browser to localhost%s",port)
+	fmt.Printf("Open browser to localhost%s", port)
 	http.ListenAndServe(port, mux)
 }

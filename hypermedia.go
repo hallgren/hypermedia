@@ -17,6 +17,7 @@ type Input struct {
 type Form struct {
 	URL    string
 	Method string
+	Rel    string
 	Inputs []*Input
 }
 
@@ -61,9 +62,9 @@ func (h *Resource) AddResource(name string) *Resource {
 }
 
 // AddForm adds a form to an existing resource
-func (h *Resource) AddForm(url, method string) *Form {
+func (h *Resource) AddForm(url, method, rel string) *Form {
 	inputs := make([]*Input, 0, 0)
-	f := Form{URL: url, Method: method, Inputs: inputs}
+	f := Form{URL: url, Method: method, Inputs: inputs, Rel: rel}
 	h.Forms = append(h.Forms, &f)
 	return &f
 }
