@@ -8,7 +8,7 @@ import (
 	"github.com/hallgren/hypermedia"
 )
 
-func TestRenderHalo(t *testing.T) {
+func TestRenderHal(t *testing.T) {
 	h := hypermedia.New("test")
 	l := hypermedia.Link{REL: "self", URL: "/", Name: "root"}
 	h.AddLink(l)
