@@ -6,10 +6,7 @@ import (
 	"text/template"
 )
 
-const haloTPL = `
-	{{ define "forms" }}
-	{{ end }}
-
+const halTPL = `
 	{{ define "links" }}
 		{{ if gt (len .Links) 0 }}
 		"_links": {
@@ -42,7 +39,6 @@ const haloTPL = `
 
 	{{ define "resource" }}
 		{{ template "links" . }}
-		{{ template "forms" . }}
 		{{ if gt (len .Resources) 0}}
 			{{ range .Resources }}
 				"_embedded": {
@@ -57,11 +53,10 @@ const haloTPL = `
 
 	{
 		{{ template "resource" . }}
-	
 	}
 `
 
-var haloTemplate, _ = template.New("halo").Parse(haloTPL)
+var haloTemplate, _ = template.New("halo").Parse(halTPL)
 
 func RenderHal(w io.Writer, h *Resource) error {
 	return haloTemplate.Execute(w, h)
