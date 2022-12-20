@@ -92,7 +92,7 @@ func main() {
 	mux := mux.NewRouter()
 	mux.HandleFunc("/", root)
 	mux.HandleFunc("/items", items)
-	mux.HandleFunc("/items/{id:[1-9]+}", item)
+	mux.HandleFunc("/items/{id}", item)
 	fmt.Printf("Open browser to localhost%s", port)
 	http.ListenAndServe(port, mux)
 }
