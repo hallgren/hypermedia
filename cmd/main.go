@@ -49,6 +49,7 @@ func items(w http.ResponseWriter, req *http.Request) {
 		h.AddForm(&f)
 		create := hypermedia.Input{Type: "text", Label: "ID", Name: "create"}
 		f.AddInput(&create)
+		f.AddList("test", "listid", "a", "b", "c")
 		submit := hypermedia.Input{Type: "submit", Value: "Create"}
 		f.AddInput(&submit)
 		hypermedia.RenderHTML(w, h)
