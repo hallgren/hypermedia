@@ -12,24 +12,13 @@ type Input struct {
 	Name  string
 	Value string
 	Label string
-	List  string // A reference to a DataList struct on the Form
-}
-
-type DataList struct {
-	ID      string
-	Options []Option
-}
-
-type Option struct {
-	Value string
 }
 
 type Form struct {
-	URL       string
-	Method    string
-	REL       string
-	Inputs    []*Input
-	DataLists []*DataList
+	URL    string
+	Method string
+	REL    string
+	Inputs []*Input
 }
 
 type Resource struct {
@@ -79,26 +68,4 @@ func (h *Resource) AddForm(f *Form) {
 // AddInput adds a input to a existing form
 func (f *Form) AddInput(i *Input) {
 	f.Inputs = append(f.Inputs, i)
-}
-
-// AddList adds a input list with values as options
-func (f *Form) AddList(name, id string, values ...string) {
-	options := []Option{}
-
-	for _, v := range values {
-		options = append(options, Option{Value: v})
-	}
-
-	list := DataList{
-		ID:      name,
-		Options: options,
-	}
-
-	input := Input{
-		Name: name,
-		ID:   id,
-		List: name,
-	}
-	f.AddInput(&input)
-	f.DataLists = append(f.DataLists, &list)
 }

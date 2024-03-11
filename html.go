@@ -108,18 +108,7 @@ const tpl = `
 				{{ if .Label }}
 					<label for="{{ .ID }}">{{ .Label }}:</label><br>
 				{{ end }}
-				{{ if .List }}
-					<input list="{{ .List }}"><br>
-				{{ else }}
-					<input type="{{ .Type }}" id="{{ .ID }}" name="{{ .Name }}" value="{{ .Value }}"><br>
-				{{ end }}
-			{{ end }}
-			{{ range .DataLists }}
-				<datalist id="{{ .ID }}" >
-					{{ range .Options }}
-						<option value="{{ .Value }}">
-					{{ end }}
-				</datalist>
+				<input type="{{ .Type }}" id="{{ .ID }}" name="{{ .Name }}" value="{{ .Value }}"><br>
 			{{ end }}
 		</form>
 	{{ end }}
